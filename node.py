@@ -59,12 +59,20 @@ class Node:
         # For anchor
         x3 = self.x + np.cos(theta) * coef * self.size
         y3 = self.y + np.sin(theta) * coef * self.size
+        # 
         x4 = self.x + np.cos(theta + np.pi/4) * coef * self.size
         y4 = self.y + np.sin(theta + np.pi/4) * coef * self.size
+        # 
         x5 = self.x + np.cos(theta - np.pi/4) * coef * self.size
         y5 = self.y + np.sin(theta - np.pi/4) * coef * self.size
+        # Eyes
+        x6 = self.x + np.cos(theta - np.pi / 2) * coef * self.size * 1/2
+        y6 = self.y + np.sin(theta - np.pi / 2) * coef * self.size * 1/2
+        x7 = self.x + np.cos(theta + np.pi / 2) * coef * self.size * 1/2
+        y7 = self.y + np.sin(theta + np.pi / 2) * coef * self.size * 1/2
+        
 
-        return [ [x1, y1], [x2, y2], [x3, y3], [x4, y4], [x5, y5]]
+        return [ [x1, y1], [x2, y2], [x3, y3], [x4, y4], [x5, y5], [x6, y6], [x7, y7] ]
 
         
         

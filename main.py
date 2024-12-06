@@ -20,6 +20,7 @@ class WorldState:
         self.displayCircles = True
         self.displayConnections = False
         self.displayLateralPoints = False
+        self.displayFilledIn = False
     
     def handleKeyBoardInput(self):
         for event in pygame.event.get():
@@ -32,10 +33,12 @@ class WorldState:
                     self.displayParametric = not self.displayParametric
                 elif event.key == pygame.K_1:
                     self.displayCircles = not self.displayCircles
-                elif event.key == pygame.K_4:
+                elif event.key == pygame.K_5:
                     self.displayConnections = not self.displayConnections
                 elif event.key == pygame.K_2:
                     self.displayLateralPoints = not self.displayLateralPoints
+                elif event.key == pygame.K_4:
+                    self.displayFilledIn = not self.displayFilledIn
 
     def drawMouse(self):
         pygame.draw.circle(self.screen, pygame.color.Color(255, 255, 255), (self.mousePos[0], self.mousePos[1]), 5)
@@ -55,13 +58,18 @@ class WorldState:
             # Display lateral points
             self.line.displayLateralPoints(self.screen)
 
-        if self.displayParametric:
-            # Display parametric curve
-            self.line.displayCurvePoints(self.screen)
-
         if self.displayConnections:
             # Display line connections
             self.line.displayLinesBetweenNodes(self.screen)
+
+        if self.displayFilledIn:
+            # Display line connections
+            self.line.displayFilledInParametricCurve(self.screen)
+
+        if self.displayParametric:
+            # Display parametric curve
+            self.line.displayCurvePoints(self.screen)
+        self.line.displayEyes(self.screen)
     
     def update(self):
         # Update mouse position

@@ -54,11 +54,12 @@ class Line:
 
     def followMouse(self, mousePos):
         distance = self.nodes[0].coordinateDistance(mousePos[0], mousePos[1])
-        self.nodes[0].normalize(mousePos[0], mousePos[1], distance / 50)
+        self.nodes[0].normalize(mousePos[0], mousePos[1], distance / 30)
 
     def setExampleLine(self):
-        bodyShape = [18, 17, 17, 25, 21, 20, 17, 15, 14, 8]
-        for i in range(10):
+        bodyShape = [18, 17, 17, 20, 21, 20, 20, 18, 18, 16,
+                     16, 16, 14, 14, 14, 12, 12, 12, 8, 4]
+        for i in range(20):
             self.nodes.append(Node(10, 10, bodyShape[i]))
         self.lateralPoints = self.getLateralSetPointList()
     
@@ -68,12 +69,10 @@ class Line:
         # For anchor node
         if len(self.nodes) > 0:
             mousePos = pygame.mouse.get_pos()
-            anchorLateralPoints = self.nodes[0].getLateralPoints(mousePos[0], mousePos[1])
-            points.append([anchorLateralPoints[0], 
-                           anchorLateralPoints[1],
-                           anchorLateralPoints[2],
-                           anchorLateralPoints[3],
-                           anchorLateralPoints[4]])
+            anchorLateralPoints = []
+            for point in self.nodes[0].getLateralPoints(mousePos[0], mousePos[1]):
+                anchorLateralPoints.append(point)
+            points.append(anchorLateralPoints)
 
         # For other nodes
         for i in range(len(self.nodes)):
@@ -149,6 +148,28 @@ class Line:
 
             # Draw line segment
             pygame.draw.line(screen, pygame.color.Color(255, 255, 255), (x1, y1), (x2, y2), 2)
+            
+    def displayFilledInParametricCurve(self, screen: pygame.Surface):
+        # Ensure valid coordinates
+        filled_curve_points = []
+        for point in self.curvePoints:
+            if len(point) > 0:
+                x, y = point
+                x = float(x)
+                y = float(y)
+                filled_curve_points.append((x, y))
+        print(filled_curve_points)
+
+        # Draw the filled polygon
+        pygame.draw.polygon(screen, pygame.color.Color(180, 180, 255), filled_curve_points)
+    
+    def displayEyes(self, screen: pygame.Surface):
+        print(self.lateralPoints[0])
+        if len(self.lateralPoints) > 0 and len(self.lateralPoints[0]) > 5:
+            eyeOne = self.lateralPoints[0][5]
+            eyeTwo = self.lateralPoints[0][6]
+            pygame.draw.circle(screen, pygame.color.Color(255, 255, 255), (eyeOne[0], eyeOne[1]), 3)
+            pygame.draw.circle(screen, pygame.color.Color(255, 255, 255), (eyeTwo[0], eyeTwo[1]), 3)
 
 
 
