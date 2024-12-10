@@ -1,5 +1,5 @@
 import pygame
-from line import Line
+from body import Body
 from node import Node
 
 SCREEN_WIDTH = 1000
@@ -12,7 +12,7 @@ pygame.mouse.set_visible(False)
 class WorldState:
     def __init__(self):
         self.running = True
-        self.line = Line([], 25)
+        self.body = Body([], 25)
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), flags=pygame.RESIZABLE)
         self.clock = pygame.time.Clock()
         self.mousePos = [0, 0]
@@ -20,7 +20,6 @@ class WorldState:
         self.displayCircles = True
         self.displayConnections = False
         self.displayLateralPoints = False
-        self.displayFilledIn = False
     
     def handleKeyBoardInput(self):
         for event in pygame.event.get():
@@ -33,12 +32,12 @@ class WorldState:
                     self.displayParametric = not self.displayParametric
                 elif event.key == pygame.K_1:
                     self.displayCircles = not self.displayCircles
-                elif event.key == pygame.K_5:
+                elif event.key == pygame.K_4:
                     self.displayConnections = not self.displayConnections
                 elif event.key == pygame.K_2:
                     self.displayLateralPoints = not self.displayLateralPoints
-                elif event.key == pygame.K_4:
-                    self.displayFilledIn = not self.displayFilledIn
+                elif event.key == pygame.K_SPACE:
+                    self.body.switchColor()
 
     def drawMouse(self):
         pygame.draw.circle(self.screen, pygame.color.Color(255, 255, 255), (self.mousePos[0], self.mousePos[1]), 5)
@@ -51,39 +50,31 @@ class WorldState:
         self.drawMouse()
 
         if self.displayCircles:
-            # Display Nodes in Line
-            self.line.displayNodes(self.screen)
+            # Display Nodes in Body
+            self.body.displayNodes(self.screen)
 
         if self.displayLateralPoints:
             # Display lateral points
-            self.line.displayLateralPoints(self.screen)
+            self.body.displayLateralPoints(self.screen)
 
         if self.displayConnections:
-            # Display line connections
-            self.line.displayLinesBetweenNodes(self.screen)
-
-        if self.displayFilledIn:
-            # Display line connections
-            self.line.displayFilledInParametricCurve(self.screen)
+            # Display body connections
+            self.body.displayLinesBetweenNodes(self.screen)
 
         if self.displayParametric:
             # Display parametric curve
-            self.line.displayCurvePoints(self.screen)
-        self.line.displayEyes(self.screen)
+            self.body.display(self.screen)
     
     def update(self):
         # Update mouse position
         self.mousePos = pygame.mouse.get_pos()
 
-        # Update node positions
-        self.line.updateNodePositions()
+        # Move head of body towards mouse
+        if pygame.mouse.get_pressed()[0]:
+            self.body.update(True)
+        else:
+            self.body.update(False)
 
-        # Move head of line towards mouse
-        self.line.followMouse(self.mousePos)
-
-        # Self explanatory
-        self.line.updateLateralPointSetPositions()
-        self.line.updateCurvePoints()
         self.handleKeyBoardInput()
     
 def main():
@@ -92,8 +83,8 @@ def main():
         
 
 def runGame(ws: WorldState):
-    # Set line to example
-    ws.line.setExampleLine()
+    # Set body to example
+    ws.body.setExampleBody()
 
     while ws.running:
 
