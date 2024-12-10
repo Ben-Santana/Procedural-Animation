@@ -40,6 +40,12 @@ class Section:
 # --- Set --- #:
 
     def switchColor(self):
+        for node in self.nodes:
+            try:
+                for leg in node.legs:
+                    leg.switchColor()
+            except:
+                pass
         if self.currentColorIndex >= len(self.colors) - 1:
             self.currentColorIndex = 0
         else:
