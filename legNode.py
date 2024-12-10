@@ -75,9 +75,9 @@ class LegNode(Node):
         for i, leg in enumerate(self.legs):
             # Display original target points (polar coordinates as text)
             original_target = self.targets[i]
-            target_text = f"Target {i + 1}: Dist={original_target[0]:.2f}, Theta={original_target[1]:.2f} rad"
-            target_label = font.render(target_text, True, pygame.color.Color('white'))
-            screen.blit(target_label, (self.x + 10, self.y + i * 20))
+            # target_text = f"Target {i + 1}: Dist={original_target[0]:.2f}, Theta={original_target[1]:.2f} rad"
+            # target_label = font.render(target_text, True, pygame.color.Color('white'))
+            # screen.blit(target_label, (self.x + 10, self.y + i * 20))
 
             # Convert original polar target to Cartesian coordinates for visualization
             polar_x, polar_y = self.getRelativePoint(self.prevNode.x, self.prevNode.y,

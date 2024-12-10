@@ -70,10 +70,7 @@ class WorldState:
         self.mousePos = pygame.mouse.get_pos()
 
         # Move head of body towards mouse
-        if pygame.mouse.get_pressed()[0]:
-            self.body.update(True)
-        else:
-            self.body.update(False)
+        self.body.update(followMouse=True)
 
         self.handleKeyBoardInput()
     
