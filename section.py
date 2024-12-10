@@ -13,7 +13,7 @@ class Section:
         Holds a list of nodes within set distance. First node is anchor node. Also has capability to draw parametric boundary as well to fill in section on pygame screen.
         """
         self.nodes: list[Node] = nodes
-        self.kinematicsHandler = InverseKinematicsHandler(3, node_spacing)
+        self.kinematicsHandler = InverseKinematicsHandler(1.0, node_spacing)
         self.lateralPoints = self.getLateralSetPointList()
         self.curvePoints = self.getParametricCurvePoints()
         self.colors = [BLUE, RED, GREEN]
@@ -24,7 +24,6 @@ class Section:
 
     def update(self):
         self.applyDistanceConstraint()
-        # self.kinematicsHandler.applyAngleConstraint(self.nodes, angle_margin=np.pi / 16)
         self.updateLateralPointSetPositions()
         self.updateCurvePoints()
 
@@ -55,11 +54,25 @@ class Section:
         self.nodes[0].x = x
         self.nodes[0].y = y
 
-    def extendTowards(self, target: Tuple[int, int]):
+    def extendTowards(self, target: Tuple[int, int], percentage: float):
+        """
+        Gradually extends all nodes in the leg towards the target by a given percentage.
+        :param target: Tuple[int, int], the target point to extend towards.
+        :param percentage: float, the percentage of the total distance to move.
+        """
         for i in range(len(self.nodes) - 1):
+            # Calculate the relative point the current node moves towards
             newPosition = self.nodes[i].getRelativePoint(target[0], target[1], self.kinematicsHandler.node_spacing)
-            self.nodes[i + 1].x = newPosition[0]
-            self.nodes[i + 1].y = newPosition[1]
+
+            # Calculate the movement increments for gradual extension
+            xDistance = newPosition[0] - self.nodes[i + 1].x
+            yDistance = newPosition[1] - self.nodes[i + 1].y
+            deltaX = xDistance * percentage
+            deltaY = yDistance * percentage
+
+            # Update the position of the next node
+            self.nodes[i + 1].x += deltaX
+            self.nodes[i + 1].y += deltaY
 # --- Get --- #
 
     def getCurrentColor(self):

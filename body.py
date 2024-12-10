@@ -36,7 +36,7 @@ class Body(Section):
                 
                 # Create LegNode with two legs and their targets
                 self.nodes.append(LegNode(
-                    10, 10, bodyShape[i], self.nodes[i-1], 200,
+                    10, 10, bodyShape[i], self.nodes[i-1], 150,
                     [exampleLeg1, exampleLeg2],  # Two legs
                     [[100, np.pi/6], [100, -np.pi/6]]  # Targets for both legs
                 ))
@@ -73,6 +73,7 @@ class Body(Section):
 
     def update(self, followMouse: bool):
         super().update()
+        # self.kinematicsHandler.applyAngleConstraint(self.nodes, angle_margin=np.pi / 16)
 
         if followMouse:
             self.followMouse(pygame.mouse.get_pos())

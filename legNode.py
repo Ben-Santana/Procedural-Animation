@@ -43,7 +43,7 @@ class LegNode(Node):
             for node in leg.nodes:
                 node.display(screen)
     
-    def moveLegsTowardsTarget(self, percentage=0.1):
+    def moveLegsTowardsTarget(self, percentage=0.3):
         for legIndex in range(len(self.legs)):
             self.legs[legIndex].moveTowards(self.currentTargets[legIndex], percentage)
             

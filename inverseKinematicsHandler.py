@@ -32,6 +32,7 @@ class InverseKinematicsHandler(KinematicsHandler):
 
     def calculateError(self, nodes: list[Node], target: Tuple[int, int]) -> float:
         error = nodes[-1].coordinateDistance(target[0], target[1])
+        print(error)
         return error
     
     def tooFar(self, nodes: list[Node], target: Tuple[int, int]) -> bool:

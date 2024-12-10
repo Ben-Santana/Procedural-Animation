@@ -11,7 +11,7 @@ class Leg(Section):
 
     
     def setExampleLeg(self):
-        legShape = [5, 5, 5, 5, 5]
+        legShape = [5, 5, 5, 5, 5, 5]
         for i in range(len(legShape)):
             if i == 0:
                 self.nodes.append(Node(10, 10, legShape[i], None))
@@ -25,7 +25,7 @@ class Leg(Section):
 
     def moveLegEndTo(self, target: Tuple[int, int]):
         if self.kinematicsHandler.tooFar(self.nodes, target):
-            self.extendTowards(target)
+            self.extendTowards(target, 0.7)
         else:
             self.nodes = self.kinematicsHandler.fabrik(self.nodes, target)
     
